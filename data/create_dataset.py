@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import pandas as pd
 import numpy as np
@@ -76,7 +77,7 @@ for i in range(n_pos_test_samples + n_neg_test_samples):
     test_samples.append(sample)
 rnd.shuffle(test_samples)
 
-# csvとlibsvmで保存
+# csvとlightgbm形式、libsvmで保存
 # csv
 columns = ['label']
 for i in range(n_features):
@@ -85,7 +86,7 @@ pd.DataFrame(train_samples, columns=columns).to_csv('train.csv', index=False)
 pd.DataFrame(valid_samples, columns=columns).to_csv('valid.csv', index=False)
 pd.DataFrame(test_samples, columns=columns).to_csv('test.csv', index=False)
 
-# libsvm
+# lightgbm形式
 with open('train.txt', 'wt') as f:
     for s in train_samples:
         print("\t".join(map(str, s)), file=f)
@@ -97,3 +98,16 @@ with open('valid.txt', 'wt') as f:
 with open('test.txt', 'wt') as f:
     for s in test_samples:
         print("\t".join(map(str, s)), file=f)
+
+# libsvm
+with open('train_libsvm.txt', 'wt') as f:
+    for s in train_samples:
+        print(s[0], " ".join(["{}:{}".format(i, si) for i, si in enumerate(s[1:])]), file=f)
+
+with open('valid_libsvm.txt', 'wt') as f:
+    for s in valid_samples:
+        print(s[0], " ".join(["{}:{}".format(i, si) for i, si in enumerate(s[1:])]), file=f)
+
+with open('test_libsvm.txt', 'wt') as f:
+    for s in test_samples:
+        print(s[0], " ".join(["{}:{}".format(i, si) for i, si in enumerate(s[1:])]), file=f)
