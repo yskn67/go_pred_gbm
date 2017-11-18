@@ -1,10 +1,14 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import pandas as pd
 import numpy as np
 from numpy import random as rnd
 from copy import deepcopy
+
+
+path = os.path.abspath(os.path.dirname(__file__))
 
 rnd.seed(0)
 n_features = 100
@@ -82,32 +86,32 @@ rnd.shuffle(test_samples)
 columns = ['label']
 for i in range(n_features):
     columns.append('feature_{}'.format(i))
-pd.DataFrame(train_samples, columns=columns).to_csv('train.csv', index=False)
-pd.DataFrame(valid_samples, columns=columns).to_csv('valid.csv', index=False)
-pd.DataFrame(test_samples, columns=columns).to_csv('test.csv', index=False)
+pd.DataFrame(train_samples, columns=columns).to_csv('{}/train.csv'.format(path), index=False)
+pd.DataFrame(valid_samples, columns=columns).to_csv('{}/valid.csv'.format(path), index=False)
+pd.DataFrame(test_samples, columns=columns).to_csv('{}/test.csv'.format(path), index=False)
 
 # lightgbm形式
-with open('train.txt', 'wt') as f:
+with open('{}/train.txt'.format(path), 'wt') as f:
     for s in train_samples:
         print("\t".join(map(str, s)), file=f)
 
-with open('valid.txt', 'wt') as f:
+with open('{}/valid.txt'.format(path), 'wt') as f:
     for s in valid_samples:
         print("\t".join(map(str, s)), file=f)
 
-with open('test.txt', 'wt') as f:
+with open('{}/test.txt'.format(path), 'wt') as f:
     for s in test_samples:
         print("\t".join(map(str, s)), file=f)
 
 # libsvm
-with open('train_libsvm.txt', 'wt') as f:
+with open('{}/train_libsvm.txt'.format(path), 'wt') as f:
     for s in train_samples:
         print(s[0], " ".join(["{}:{}".format(i, si) for i, si in enumerate(s[1:])]), file=f)
 
-with open('valid_libsvm.txt', 'wt') as f:
+with open('{}/valid_libsvm.txt'.format(path), 'wt') as f:
     for s in valid_samples:
         print(s[0], " ".join(["{}:{}".format(i, si) for i, si in enumerate(s[1:])]), file=f)
 
-with open('test_libsvm.txt', 'wt') as f:
+with open('{}/test_libsvm.txt'.format(path), 'wt') as f:
     for s in test_samples:
         print(s[0], " ".join(["{}:{}".format(i, si) for i, si in enumerate(s[1:])]), file=f)

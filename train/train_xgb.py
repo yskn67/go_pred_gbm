@@ -1,10 +1,15 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import json
 import pandas as pd
 import xgboost as xgb
 
+
+path = os.path.abspath(os.path.dirname(__file__))
+if not os.path.exists('{}/model'.format(path)):
+    os.mkdir('{}/model'.format(path))
 
 def parse_model(model, tree):
     nodeid = int(tree['nodeid'])
@@ -29,8 +34,8 @@ def parse_model(model, tree):
 
     return model
 
-train = pd.read_csv("../data/train.csv")
-valid = pd.read_csv("../data/valid.csv")
+train = pd.read_csv('{}/../data/train.csv'.format(path))
+valid = pd.read_csv('{}/../data/valid.csv'.format(path))
 
 dtrain = xgb.DMatrix(train.drop('label', axis=1), train['label'])
 dvalid = xgb.DMatrix(valid.drop('label', axis=1), valid['label'])
@@ -48,9 +53,9 @@ bst = xgb.train(params,
 
 dump = bst.get_dump(dump_format='json')
 dump_json = [json.loads(d.strip()) for d in dump]
-with open('dump.json', 'wt') as f:
+with open('{}/../model/dump.json'.format(path), 'wt') as f:
     json.dump(dump_json, f)
-bst.dump_model('dump.txt')
+bst.dump_model('{}/../model/dump.txt'.format(path))
 
 dump_model = []
 for d in dump_json:
@@ -63,5 +68,5 @@ for d in dump_json:
 
     dump_model.append(model_list)
 
-with open('dump_model.json', 'wt') as f:
+with open('{}/../model/dump_model.json'.format(path), 'wt') as f:
     json.dump(dump_model, f)
