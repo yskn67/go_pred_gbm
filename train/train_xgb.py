@@ -5,11 +5,12 @@ import os
 import json
 import pandas as pd
 import xgboost as xgb
+from sklearn.externals import joblib
 
 
 path = os.path.abspath(os.path.dirname(__file__))
-if not os.path.exists('{}/model'.format(path)):
-    os.mkdir('{}/model'.format(path))
+if not os.path.exists('{}/../model'.format(path)):
+    os.mkdir('{}/../model'.format(path))
 
 def parse_model(model, tree):
     nodeid = int(tree['nodeid'])
@@ -51,6 +52,8 @@ bst = xgb.train(params,
                 evals=[(dvalid, 'logloss')]
                 )
 
+bst.save_model('{}/../model/dump.model'.format(path))
+joblib.dump(bst, '{}/../model/dump.pkl'.format(path))
 dump = bst.get_dump(dump_format='json')
 dump_json = [json.loads(d.strip()) for d in dump]
 with open('{}/../model/dump.json'.format(path), 'wt') as f:
