@@ -103,6 +103,9 @@ with open('{}/test.txt'.format(path), 'wt') as f:
     for s in test_samples:
         print("\t".join(map(str, s)), file=f)
 
+with open('{}/test_oneline.txt'.format(path), 'wt') as f:
+    print("\t".join(map(str, test_samples[0])), file=f)
+
 # libsvm
 with open('{}/train_libsvm.txt'.format(path), 'wt') as f:
     for s in train_samples:
@@ -115,3 +118,6 @@ with open('{}/valid_libsvm.txt'.format(path), 'wt') as f:
 with open('{}/test_libsvm.txt'.format(path), 'wt') as f:
     for s in test_samples:
         print(s[0], " ".join(["{}:{}".format(i, si) for i, si in enumerate(s[1:])]), file=f)
+
+with open('{}/test_libsvm_oneline.txt'.format(path), 'wt') as f:
+    print(s[0], " ".join(["{}:{}".format(i, si) for i, si in enumerate(test_samples[0][1:])]), file=f)
