@@ -55,3 +55,32 @@ func TestPredict(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func BenchmarkPredict(b *testing.B) {
+	m, _ := NewModel("../../model/dump_model.json")
+	file, _ := os.Open("../../data/test_oneline.txt")
+	defer file.Close()
+
+	d := make([]float64, 100)
+	r := bufio.NewReaderSize(file, 4096)
+	var err error
+	for line := ""; err == nil; line, err = r.ReadString('\n') {
+		if len(line) <= 0 {
+			continue
+		}
+		line = strings.TrimRight(line, "\n")
+		rcsv := csv.NewReader(strings.NewReader(line))
+		rcsv.Comma = '\t'
+
+		record, _ := rcsv.ReadAll()
+		for i := 1; i < len(record[0]); i++ {
+			d[i-1], _ = strconv.ParseFloat(record[0][i], 64)
+		}
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = m.Predict(d)
+	}
+}

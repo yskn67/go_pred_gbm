@@ -1,5 +1,6 @@
-#! /bin/zsh
+#! /bin/sh
 
+cd `dirname $0`
 git clone --recursive https://github.com/dmlc/xgboost.git  
 cd xgboost  
 ./build.sh

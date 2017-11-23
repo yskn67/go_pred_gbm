@@ -2,7 +2,7 @@ package main
 
 /*
 #cgo CFLAGS: -I${SRCDIR}/../xgboost/dmlc-core/include -I${SRCDIR}/../xgboost/rabit/include -I${SRCDIR}/../xgboost/include
-#cgo LDFLAGS: -pthread -lm -L${SRCDIR}/../xgboost/lib -lxgboost
+#cgo LDFLAGS: -pthread -lm -L${SRCDIR}/lib -lxgboost
 #include <stdlib.h>
 #include <xgboost/c_api.h>
 */

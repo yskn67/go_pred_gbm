@@ -2,7 +2,8 @@
 .python-version
 /xgboost
 /model
-/go_cgo/go_cgo
+/gbm_cgo/gbm_cgo
+/gbm_cgo/lib/
 *.json
 *.csv
 *.txt
